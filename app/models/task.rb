@@ -5,6 +5,7 @@ class Task < ApplicationRecord
 
   after_create_commit { broadcast_task }
   after_update_commit { broadcast_task }
+  after_destroy_commit { broadcast_task_deletion }
 
   def self.send_due_reminders
     where("due_date <= ? AND completed = ?", 1.day.from_now, false).each do |task|
@@ -16,5 +17,9 @@ class Task < ApplicationRecord
 
   def broadcast_task
     ActionCable.server.broadcast("task_updates", self)
+  end
+
+  def broadcast_task_deletion
+    ActionCable.server.broadcast("task_updates", { id: id, deleted: true })
   end
 end
