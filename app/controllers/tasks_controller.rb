@@ -36,8 +36,8 @@ class TasksController < ApplicationController
     private
   
     def task_params
-      params.require(:task).permit(:title, :description, :due_date, :completed, :assigned_to)
-    end    
+      params.require(:task).permit(:title, :description, :due_date, :completed, :category_id, :assigned_to)
+    end
   
     def broadcast_task(task, action)
       ActionCable.server.broadcast "task_channel", { task: task, action: action }
