@@ -14,7 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '579bacc606ca1c57469ed0095a9bbb630560630c3e5399ec8aacfbcad0a8a55e4987186ba02bb23b0b42936ab7c4e4d6bdfd876852ee2538fdb12328635e95cb'
+  # config.secret_key = 'dbd9f253430c8b8843fb75b9b9a62e3b6c45af7807382e418012005640ef2bd23be4d303ed27c162dad4f84e70453ccf52d52d766d118dbefff671c723507544'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -97,7 +97,7 @@ Devise.setup do |config|
   # Notice that if you are skipping storage for all authentication paths, you
   # may want to disable generating routes to Devise's sessions controller by
   # passing skip: :sessions to `devise_for` in your config/routes.rb
-  config.skip_session_storage = [:http_auth]
+  config.skip_session_storage = [:http_auth, :params_auth]
 
   # By default, Devise cleans up the CSRF token on authentication to
   # avoid CSRF token fixation attacks. This means that, when using AJAX
@@ -126,7 +126,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = 'f6c12ba5b80970761c30dee30e82c1721db48a9cd12a511e4fecf6af4e97b56fc2ba034ffd3f1ca1e5b203649514f3e6a571c6ac61e6711e6aedbd6c945aab54'
+  # config.pepper = '718c37e253488520a0527e021c8d057808ca3daad3e62508fbcda01c1c339a0d3e60349e5110b33866a0de1b54d8e9e699e7cb20bcac63c4e89fe450fecc8e12'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -264,7 +264,7 @@ Devise.setup do |config|
   #
   # The "*/*" below is required to match Internet Explorer requests.
   # config.navigational_formats = ['*/*', :html, :turbo_stream]
-  config.navigational_formats = []
+  config.navigational_formats = [:json]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
@@ -311,12 +311,4 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
-
-  config.jwt do |jwt|
-    jwt.secret = Rails.application.credentials.devise_jwt_secret_key
-    jwt.dispatch_requests = [['POST', %r{^/login$}]]
-    jwt.revocation_requests = [['DELETE', %r{^/logout$}]]
-    jwt.expiration_time = 1.day.to_i
-  end
-  
 end
